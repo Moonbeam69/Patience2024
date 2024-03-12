@@ -3,6 +3,10 @@ package org.example;
 import java.io.*;
 import java.util.*;
 
+import static org.example.Action.STACK;
+import static org.example.Constants.GAME;
+import static org.example.Constants.SPARE;
+
 public class GameDeck {
     public Card[][] gamedeck = new Card[7][20];
     public ArrayList<Card> carddeck;
@@ -12,9 +16,9 @@ public class GameDeck {
     ArrayList<Card> spadesStack = new ArrayList<Card>();
     ArrayList<Card> clubsStack = new ArrayList<Card>();
     int sparedeckindex = 0;
-    String SPARE = "SPARE";
-    String GAME = "GAME";
-    String STACK = "STACK";
+//    String SPARE = "SPARE";
+//    String GAME = "GAME";
+//    String STACK = "STACK";
 
     public GameDeck() {
     }

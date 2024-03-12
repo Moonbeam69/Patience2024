@@ -8,9 +8,9 @@ public class Action {
 
     public Card playableCard;
     public Card targetCard;
-    String SPARE = "SPARE";
-    String GAME = "GAME";
-    String STACK = "STACK";
+    static String SPARE = "SPARE";
+    static String GAME = "GAME";
+    static String STACK = "STACK";
 
     public String getDescription() {
         int a = 1;
