@@ -1,26 +1,37 @@
 package org.example;
 
 import java.util.*;
-
 // Add some commentary here
 public class Player {
-    ArrayList<Action> Actions = new ArrayList<Action>();
+    ArrayList<Action> Actions;
+    ArrayList<String> historicalActions;
+    GameDeck gamedeck;
+    int moveCount;
+    int GameNo;
+    Boolean print;
+    ArrayList<Card> playableCards;
+    ArrayList<Card> targetCards;
+
+    ArrayList<GameState> Gamestatehistory = new ArrayList<GameState>();
+    ArrayList <ArrayList<GameState>> AllGamestatehistory = new ArrayList<ArrayList<GameState>>();
 
     public static void main(String[] args) {
         Player main = new Player();
     }
 
     // Backlog
-    //6. Need a to define, create, track and report KPIs
+
 
     // Working on
-    // testing and fixing:
+    // need to make sure higher prob. that aces are in the gamedeck not the sparedeck
+    // testing and fixing
 
-    // Bugs:
-    // occasionally, game execution does not work. cards are not played to the stacks and score remains at 0 even though actions on deck are completed. Problem in isAllowed?
-    // Ace (any card?) in last place on spare deck does not get played
+    // Bugs
 
     // Done
+    //6. Need a to define, create, track and report KPIs
+    // occasionally, game execution does not work. cards are not played to the stacks and score remains at 0 even though actions on deck are completed. Problem in isAllowed?
+    // Ace (any card?) in last place on spare deck does not get played
     // if no actions were done for sparedeckindex=0 to sparedeckindex=sparedeck.size quit game
     //3. Need to be able  inject specific test data / cases
     // Hearts cards are added to stack in 2-4-6 fashion. Other suits are fine. Investigate: "Index 13 out of bounds for length 13" at move 50
@@ -40,47 +51,38 @@ public class Player {
 
     Player() {
 
-        GameDeck gamedeck;
-        int moveCount;
-        int GameNo;
-        ArrayList<String> historicalActions = new ArrayList<String>();
-        String SPARE = "SPARE";
-        String GAME = "GAME";
-        String STACK = "STACK";
+        final String SPARE = "SPARE";
+        final String GAME = "GAME";
+        final String STACK = "STACK";
+        print = false;
+
+        ArrayList<String> results = new ArrayList<>();
+        ArrayList<Integer> scores = new ArrayList<Integer>();
+        GameState gs = null;
+        System.out.println("Print setting: " + print);
 
         // Number of games to play
-        for (GameNo = 1; GameNo < 3; GameNo++) {
+        for (GameNo = 1; GameNo < 1000; GameNo++) {
 
             // GameDeck usage: GameDeck(file_to_use)  or GameDeck("") to create new file c:\\data\\PatiencelatestGame.txt
-            gamedeck = new GameDeck("c:\\data\\PatienceTestData1.txt"); // c:\data\PatienceTestData1.txt
+            //gamedeck = new GameDeck("c:\\data\\PatienceTestData1.txt");
+            gamedeck = new GameDeck("");
+            historicalActions = new ArrayList<String>();
 
-            Boolean print               = true;
-            moveCount                   = 1;
+            moveCount                   = 0;
             int no_of_performed_actions = 0;
             Boolean DoNextMove          = true;
 
-            System.out.println("Print setting: " + print);
+            gs = new GameState();
 
             // Gameloop
             while (DoNextMove) {
 
                 if (moveCount==400) System.exit(0);
+                if (print) System.out.println("GameHistory No/No Considered Moves/No Performed Moves: " + GameNo + "/" + moveCount + "/" + no_of_performed_actions);
 
-                // Playbook:
-
-                // 1. Create a new List of all possible moves
-
-                Actions.clear();
-                // 2. parse all playable cards in game deck & spare deck
-                // 3. create (all) moves for playable cards and assign a priority
-                // [TODO] place one/some cards from RemovedCards and check if progress
-
-                // Find the playable cards:
-                //      first and last visible cards in each column
-                //      sparedeck index card
-                //      technically the top card from each stack is playable but leaving that out for now
-
-                ArrayList<Card> playableCards = new ArrayList();
+                Actions = new ArrayList<Action>();
+                playableCards = new ArrayList();
 
                 Card firstcandidate= null;
                 Card lastcandidate = null;
@@ -116,10 +118,10 @@ public class Player {
                 }
 
                 // add the indexed spare
-                playableCards.add(gamedeck.getSpareDeckCard());
+                if (gamedeck.getSpareDeckCard() != null) playableCards.add(gamedeck.getSpareDeckCard());
 
                 // find all possible targets cards
-                ArrayList<Card> targetCards = new ArrayList();
+                targetCards = new ArrayList();
 
                 for (int col = 0; col < 7; col++) {
                     for (int row = 19; row > -1; row--) {
@@ -140,23 +142,7 @@ public class Player {
                 targetCards.add(gamedeck.getlast(gamedeck.spadesStack)); // get "last" card on stack
                 targetCards.add(gamedeck.getlast(gamedeck.clubsStack)); // get "last" card on stack
 
-                if (print) {
-                    System.out.println("Before move");
-                    System.out.println("===========");
-                    System.out.print("Playable: ");
-                    for (Card card : playableCards) System.out.print(card.getValue() + " ");
-                    System.out.println();
-                    System.out.print("Target:   ");
-                    for (Card card : targetCards) System.out.print(card.getValue() + " ");
-                    System.out.println();
-                    System.out.println("Actions:");
-                    gamedeck.printGameDeck();
-                    gamedeck.printSpareDeck();
-                    gamedeck.printStacks();
-                }
-
                 // determine possible actions
-                int n = 0;
                 for (Card playablecard : playableCards) {
                     for (Card targetcard : targetCards) {
 
@@ -171,7 +157,6 @@ public class Player {
 
                             Actions.add(action);
 
-                            n = n + 1;
                         }
                     }
                 }
@@ -184,39 +169,13 @@ public class Player {
                     }
                 }
 
-                if (print) {
-                    for (Action action : Actions) {
-                        System.out.println(action.playableCard.getValue() + " to " + action.targetCard.getValue() + " " + action.type);
-                    }
-                }
-
-                // 2. Play moves according to ranking
+                PrintAll ("Before action");
+                PrintActions ();
 
                 Action nextAction = null;
                 try {
-
                     processactions:
                     {
-                        nextAction = getNextActionType("GAMESTACK");
-                        if (nextAction != null) {
-
-                            if (!historicalActions.contains(nextAction.getDescription())) {
-                                if (print) System.out.println("Doing: " + nextAction.getDescription());
-                                no_of_performed_actions++;
-                                gamedeck.move(nextAction.playableCard, nextAction.targetCard);
-                                break processactions; // break block
-                            }
-                        }
-                        nextAction = getNextActionType("GAMEGAME");
-                        if (nextAction != null) {
-
-                            if (!historicalActions.contains(nextAction.getDescription())) {
-                                if (print) System.out.println("Doing: " + nextAction.getDescription());
-                                no_of_performed_actions++;
-                                gamedeck.move(nextAction.playableCard, nextAction.targetCard);
-                                break processactions; // break block
-                            }
-                        }
                         nextAction = getNextActionType("SPARESTACK");
                         if (nextAction != null) {
 
@@ -227,6 +186,18 @@ public class Player {
                                 break processactions; // break block
                             }
                         }
+
+                        nextAction = getNextActionType("GAMESTACK");
+                        if (nextAction != null) {
+
+                            if (!historicalActions.contains(nextAction.getDescription())) {
+                                if (print) System.out.println("Doing: " + nextAction.getDescription());
+                                no_of_performed_actions++;
+                                gamedeck.move(nextAction.playableCard, nextAction.targetCard);
+                                break processactions; // break block
+                            }
+                        }
+
                         nextAction = getNextActionType("SPAREGAME");
                         if (nextAction != null) {
 
@@ -237,6 +208,19 @@ public class Player {
                                 break processactions; // break block
                             }
                         }
+
+                        nextAction = getNextActionType("GAMEGAME");
+                        if (nextAction != null) {
+
+                            if (!historicalActions.contains(nextAction.getDescription())) {
+                                if (print) System.out.println("Doing: " + nextAction.getDescription());
+                                no_of_performed_actions++;
+                                gamedeck.move(nextAction.playableCard, nextAction.targetCard);
+                                break processactions; // break block
+                            }
+                        }
+
+
                       }
 
                 } catch (Exception e) {
@@ -250,11 +234,13 @@ public class Player {
                 // determine end-of-game (game loop) conditions
                 if (Actions.size() > 0 && gamedeck.sparedeckindex <= gamedeck.sparedeck.size()-2) { // more to go
                     DoNextMove = true;
-                    if (print) System.out.println("# action: "+ no_of_performed_actions);
+                    moveCount++;
+                    if (print) System.out.println("# performed actions: "+ no_of_performed_actions);
+
                 } else if (gamedeck.sparedeckindex >= gamedeck.sparedeck.size()-1 && no_of_performed_actions == 0) {
                     DoNextMove = false;
 
-                } else if (Actions.size() == 0 && gamedeck.sparedeckindex <= gamedeck.sparedeck.size()-1) { // no actions & reached penultimate sparedeckindex
+                } else if (Actions.size() == 0 && (gamedeck.sparedeckindex <= gamedeck.sparedeck.size()-1 || gamedeck.sparedeckindex == gamedeck.sparedeck.size())) { // no actions & reached penultimate sparedeckindex
                     gamedeck.sparedeckindex++; // move to next index sparedeck card
 
                     if (gamedeck.sparedeckindex > gamedeck.sparedeck.size()-1 ) { // for past last card
@@ -263,36 +249,40 @@ public class Player {
                     }
                     if (print) System.out.println("# action: "+ no_of_performed_actions);
                     DoNextMove = true;
-                }
-                System.out.println("After move");
-                System.out.println("===========");
-                if (print) {
-                    gamedeck.printGameDeck();
-                    gamedeck.printSpareDeck();
-                    gamedeck.printStacks();
-                }
-
-                moveCount++;
+                    moveCount++;
                 }
 
 
-            if (print) {
-                System.out.println("End of game");
-                System.out.println("===========");
+                gs.gamedeck = gamedeck;
+                gs.action = nextAction;
 
-                gamedeck.printGameDeck();
-                gamedeck.printSpareDeck();
-                gamedeck.printStacks();
             }
+
+            PrintAll("End of GameHistory");
 
             int score = gamedeck.heartsStack.size()-1 + gamedeck.diamondsStack.size()-1 + gamedeck.spadesStack.size()-1 + gamedeck.clubsStack.size()-1;
 
-            //System.out.println("====");
-            System.out.println("Sim iterations: " + GameNo + ", gamesteps: " + moveCount + ", score: " + score + "/52");
-            //System.out.println("====");
+            results.add("Games: " + GameNo + ", score: " + score + "/52");
+            scores.add(score);
 
 
         }
+
+        Gamestatehistory.add(gs);
+
+        if (print) {
+            for (String result : results) {
+                System.out.println(result);
+            }
+        }
+        float avg = 0f;
+        for (int score: scores) {
+            avg += score;
+        }
+        System.out.println("Number of games: " + GameNo);
+        System.out.println("average score: " + avg/ scores.size());
+        System.out.println("max score: " + Collections.max(scores));
+
 
     }
 
@@ -312,5 +302,35 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public void PrintAll(String message) {
+        if (print) {
+            System.out.println();
+            System.out.println(message);
+            System.out.println("===========");
+            System.out.print("Playable: ");
+            for (Card card : playableCards) System.out.print(card.getValue() + " ");
+            System.out.println();
+            System.out.print("Target:   ");
+            for (Card card : targetCards) System.out.print(card.getValue() + " ");
+            System.out.println();
+
+            gamedeck.printGameDeck();
+            gamedeck.printSpareDeck();
+            gamedeck.printStacks();
+            System.out.println();
+        }
+    }
+
+    public void PrintActions() {
+        if (print) {
+            System.out.println();
+            System.out.println("Possible actions:");
+            for (Action action : Actions) {
+                System.out.println(action.playableCard.getValue() + " to " + action.targetCard.getValue() + " " + action.type);
+            }
+            System.out.println();
+        }
     }
 }

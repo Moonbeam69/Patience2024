@@ -13,6 +13,7 @@ public class Action {
     String STACK = "STACK";
 
     public String getDescription() {
+        int a = 1;
         return Description;
     }
 
@@ -26,5 +27,9 @@ public class Action {
 
     public void setPriority(Integer priority) {
         Priority = priority;
+    }
+
+    private void testme() {
+
     }
 }

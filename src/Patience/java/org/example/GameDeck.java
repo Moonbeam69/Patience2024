@@ -16,6 +16,9 @@ public class GameDeck {
     String GAME = "GAME";
     String STACK = "STACK";
 
+    public GameDeck() {
+    }
+
     public GameDeck(String testdatafile) {
 
         if (testdatafile.equals("")) {
@@ -25,12 +28,13 @@ public class GameDeck {
                 card.setLocation(SPARE);
             }
 
+            java.util.Random r = new Random();
+
             // Setup GameDeck
             for (int row = 0; row < 7; row++) {
                 for (int col = row; col < 7; col++) {
 
                     int max = carddeck.size() - 1;
-                    java.util.Random r = new Random();
 
                     int p = r.nextInt(max + 1);
                     gamedeck[col][row] = carddeck.get(p);
@@ -45,6 +49,26 @@ public class GameDeck {
 
                     carddeck.remove(p);
                     max--;
+                }
+            }
+
+            // push aces to be closer to edge
+            for (int col = 0; col < 7; col++) {
+                for (int row = 0; row <= col; row++) {
+
+                    if (gamedeck[col][row].getValue().equals("HA")) {
+                        int newrow = row + 4;
+                        if (newrow>col) {
+                            newrow = col;
+                        }
+                        Card temp = gamedeck[col][row];
+                        gamedeck[col][row] = gamedeck[col][newrow];
+                        gamedeck[col][row].setVisible(false);
+
+                        gamedeck[col][newrow] = temp;
+                        gamedeck[col][newrow].setVisible(true);
+                    }
+
                 }
             }
 
@@ -165,11 +189,18 @@ public class GameDeck {
     }
 
     public Card getSpareDeckCard() {
-        //System.out.println("sparedeckindex: " + sparedeckindex);
-        if (sparedeckindex <= sparedeck.size()-1) {
-            return sparedeck.get(sparedeckindex);
-        } else {
-            return sparedeck.get(0);
+        try {
+            //System.out.println("sparedeckindex: " + sparedeckindex);
+            if (sparedeckindex <= sparedeck.size() - 1) {
+                return sparedeck.get(sparedeckindex);
+            } else {
+                return sparedeck.get(0);
+            }
+        } catch (Exception e) {
+            //printGameDeck();
+            //printSpareDeck();
+            //printStacks();
+            return null;
         }
     }
 
@@ -324,6 +355,7 @@ public class GameDeck {
     int getRow(Card card) {
         int r = -1;
 
+        if (card != null) {
         try {
             if (card.getValue().substring(0, 1).equals("_")) {
                 return 0; // always 0
@@ -346,6 +378,10 @@ public class GameDeck {
             }
         }
         return r;
+        } else {
+            System.out.println("Error null card");
+            return r;
+        }
     }
 
     int getCol(Card card) {
