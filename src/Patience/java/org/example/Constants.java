@@ -7,7 +7,7 @@ public final class Constants {
 
     // Private constructor to prevent instantiation
     private Constants() {
-        // empty
+        String foo = "foo";
     }
 }
 
