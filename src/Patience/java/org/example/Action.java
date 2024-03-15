@@ -4,6 +4,14 @@ public class Action {
     String Description;
     Integer Priority;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String type;
 
     public Card playableCard;
