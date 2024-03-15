@@ -1,12 +1,11 @@
 package org.example;
 
+import static org.example.Constants.*;
+
 public class Card {
     public String value;
     public Boolean visible;
     public String location; // STACK | GAME | SPARE
-    String SPARE = "SPARE";
-    String GAME = "GAME";
-    String STACK = "STACK";
 
     public Card (String value, Boolean visible) {
         this.value = value;
@@ -52,7 +51,7 @@ public class Card {
 
     public int getNumber() {
         int ret = 0;
-        String val = value.substring(1, value.length());
+        String val = value.substring(1);
 
         if (val.equals("X") || val.equals("A") || val.equals("J") || val.equals("Q") || val.equals("K")) {
             if (val.equals("X")) ret = 10;

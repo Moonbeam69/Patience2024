@@ -1,7 +1,8 @@
-import org.junit.*;
-import org.example.*;
+package org.example;
 
-public class MyFirstTest {
+import org.junit.*;
+
+public class ActionTest {
 
     @Test
     public void testSetGetDescription() {
@@ -19,5 +20,12 @@ public class MyFirstTest {
         Action testaction = new Action();
         testaction.setPriority(testpriority);
         Assert.assertEquals(testaction.getPriority(), testpriority);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testTestMe() {
+        Action testaction = new Action();
+        testaction.testme();
+        Assert.assertEquals(1,2);
     }
 }
