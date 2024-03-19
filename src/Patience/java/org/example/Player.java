@@ -28,7 +28,7 @@ public class Player {
 
     // Backlog
     // some backlog item
-    // Working on some changes
+    // Working on parsing allgamestatehistory
 
     // Bugs
 
@@ -60,7 +60,7 @@ public class Player {
 
         maxplays = 10000;
         print    = false;
-        final Boolean PRIORITISE_EMPTY_COLUMN_CREATION = true;
+        final Boolean PRIORITISE_EMPTY_COLUMN_CREATION = false;
 
 
         ArrayList<String> results = new ArrayList<>();
@@ -220,7 +220,7 @@ public class Player {
                 try {
                     processactions:
                     {
-                        nextAction = getNextActionType("SPARESTACK");
+                        nextAction = getNextActionType(SPARESTACK);
                         if (nextAction != null) {
 
                             if (!historicalActions.contains(nextAction.getDescription())) {
@@ -231,7 +231,7 @@ public class Player {
                             }
                         }
 
-                        nextAction = getNextActionType("GAMESTACK");
+                        nextAction = getNextActionType(GAMESTACK);
                         if (nextAction != null) {
 
                             if (!historicalActions.contains(nextAction.getDescription())) {
@@ -242,7 +242,7 @@ public class Player {
                             }
                         }
 
-                        nextAction = getNextActionType("SPAREGAME");
+                        nextAction = getNextActionType(SPAREGAME);
                         if (nextAction != null) {
 
                             if (!historicalActions.contains(nextAction.getDescription())) {
@@ -253,7 +253,7 @@ public class Player {
                             }
                         }
 
-                        nextAction = getNextActionType("GAMEGAME");
+                        nextAction = getNextActionType(GAMEGAME);
                         if (nextAction != null) {
 
                             if (!historicalActions.contains(nextAction.getDescription())) {
@@ -312,11 +312,7 @@ public class Player {
                 no_of_wins++;
             }
 
-
         }
-
-
-
         //if (print) {
 //            for (String result : results) {
 //                System.out.println(result);
@@ -333,10 +329,6 @@ public class Player {
 
         System.out.println("wins/total plays: " + 100*(float)no_of_wins/maxplays + "%");
 
-
-        //System.out.println(allgamestatehistory.get(0).get(0).gamedeck.gamedeck[0][0].getValue());
-
-
     }
 
     public Action getNextActionType(String type) {
@@ -347,15 +339,15 @@ public class Player {
         return null;
     }
 
-    public Action getNextGameStack() {
-        for(Action action: Actions ) {
-
-            if (action.type.equals("GAMESTACK")) {
-                return action;
-            }
-        }
-        return null;
-    }
+//    public Action getNextGameStack() {
+//        for(Action action: Actions ) {
+//
+//            if (action.type.equals(GAMESTACK)) {
+//                return action;
+//            }
+//        }
+//        return null;
+//    }
 
     public void PrintAll(String message) {
         if (print) {
@@ -376,35 +368,35 @@ public class Player {
         }
     }
 
-    public void PrintAll(String message, Boolean Override) {
+//    public void PrintAll(String message, Boolean Override) {
+//
+//        System.out.println();
+//        System.out.println(message);
+//        System.out.println("===========");
+//        System.out.print("Playable: ");
+//        for (org.example.Card card : playableCards) System.out.print(card.getValue() + " ");
+//        System.out.println();
+//        System.out.print("Target:   ");
+//        for (org.example.Card card : targetCards) System.out.print(card.getValue() + " ");
+//        System.out.println();
+//
+//        gamedeck.printGameDeck();
+//        gamedeck.printSpareDeck();
+//        gamedeck.printStacks();
+//        System.out.println();
+//    }
 
-        System.out.println();
-        System.out.println(message);
-        System.out.println("===========");
-        System.out.print("Playable: ");
-        for (org.example.Card card : playableCards) System.out.print(card.getValue() + " ");
-        System.out.println();
-        System.out.print("Target:   ");
-        for (org.example.Card card : targetCards) System.out.print(card.getValue() + " ");
-        System.out.println();
 
-        gamedeck.printGameDeck();
-        gamedeck.printSpareDeck();
-        gamedeck.printStacks();
-        System.out.println();
-    }
-
-
-    public void PrintActions() {
-        if (print) {
-            System.out.println();
-            System.out.println("Possible actions:");
-            for (Action action : Actions) {
-                System.out.println(action.playableCard.getValue() + " to " + action.targetCard.getValue() + " " + action.type);
-            }
-            System.out.println();
-        }
-    }
+//    public void PrintActions() {
+//        if (print) {
+//            System.out.println();
+//            System.out.println("Possible actions:");
+//            for (Action action : Actions) {
+//                System.out.println(action.playableCard.getValue() + " to " + action.targetCard.getValue() + " " + action.type);
+//            }
+//            System.out.println();
+//        }
+//    }
 
     public void PrintActions(String message) {
         if (print) {
