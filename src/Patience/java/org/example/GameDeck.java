@@ -6,17 +6,14 @@ import java.util.*;
 import static org.example.Constants.*;
 
 public class GameDeck {
-    public org.example.Card[][] gamedeck = new org.example.Card[7][20];
-    public ArrayList<org.example.Card> carddeck;
-    public ArrayList<org.example.Card> sparedeck;
-    ArrayList<org.example.Card> heartsStack = new ArrayList<org.example.Card>();
-    ArrayList<org.example.Card> diamondsStack = new ArrayList<org.example.Card>();
-    ArrayList<org.example.Card> spadesStack = new ArrayList<org.example.Card>();
-    ArrayList<org.example.Card> clubsStack = new ArrayList<org.example.Card>();
+    public Card[][] gamedeck = new Card[7][20];
+    public ArrayList<Card> carddeck;
+    public ArrayList<Card> sparedeck;
+    ArrayList<Card> heartsStack = new ArrayList<Card>();
+    ArrayList<Card> diamondsStack = new ArrayList<Card>();
+    ArrayList<Card> spadesStack = new ArrayList<Card>();
+    ArrayList<Card> clubsStack = new ArrayList<Card>();
     int sparedeckindex = 0;
-//    String SPARE = "SPARE";
-//    String GAME = "GAME";
-//    String STACK = "STACK";
 
     public GameDeck() {
     }
@@ -24,9 +21,9 @@ public class GameDeck {
     public GameDeck(String testdatafile) {
 
         if (testdatafile.equals("")) {
-            carddeck = org.example.CardDeck.getCardDeck(true);
+            carddeck = CardDeck.getCardDeck(true);
             sparedeck = carddeck;
-            for (org.example.Card card : sparedeck) {
+            for (Card card : sparedeck) {
                 card.setLocation(SPARE);
             }
 
@@ -41,8 +38,6 @@ public class GameDeck {
                     int p = r.nextInt(max + 1);
                     gamedeck[col][row] = carddeck.get(p);
                     gamedeck[col][row].setLocation(GAME);
-
-
                     gamedeck[col][row].setVisible(col == row);
 
                     carddeck.remove(p);
@@ -59,7 +54,7 @@ public class GameDeck {
                         if (newrow>col) {
                             newrow = col;
                         }
-                        org.example.Card temp = gamedeck[col][row];
+                        Card temp = gamedeck[col][row];
                         gamedeck[col][row] = gamedeck[col][newrow];
                         gamedeck[col][row].setVisible(false);
 
@@ -71,19 +66,19 @@ public class GameDeck {
             }
 
             // Setup up stacks with an initial fictitious zero card
-            org.example.Card hearts_null_card = new org.example.Card("H0", false);
+            Card hearts_null_card = new Card("H0", false);
             hearts_null_card.setLocation("STACK");
             heartsStack.add(hearts_null_card);
 
-            org.example.Card diamonds_null_card = new org.example.Card("D0", false);
+            Card diamonds_null_card = new Card("D0", false);
             diamonds_null_card.setLocation("STACK");
             diamondsStack.add(diamonds_null_card);
 
-            org.example.Card spades_null_card = new org.example.Card("S0", false);
+            Card spades_null_card = new Card("S0", false);
             spades_null_card.setLocation("STACK");
             spadesStack.add(spades_null_card);
 
-            org.example.Card clubs_null_card = new org.example.Card("C0", false);
+            Card clubs_null_card = new Card("C0", false);
             clubs_null_card.setLocation("STACK");
             clubsStack.add(clubs_null_card);
 
@@ -141,33 +136,33 @@ public class GameDeck {
                             String[] linecards = br.readLine().trim().split(" ");
                             for (int col=row; col<7; col++) {
                                 Boolean visflag = linecards[col-row].contains("#");
-                                gamedeck[col][row]= new org.example.Card(linecards[col-row].replace("#", ""), visflag, GAME);
+                                gamedeck[col][row]= new Card(linecards[col-row].replace("#", ""), visflag, GAME);
                             }
                         }
 
                         // read sparedeck
                         String[] sparecards = br.readLine().trim().split(" ");
-                        sparedeck = new ArrayList<org.example.Card>();
+                        sparedeck = new ArrayList<Card>();
 
                         for (int n=2; n<26; n++ ) {
                             Boolean visflag = sparecards[n].contains("#");
-                            sparedeck.add (new org.example.Card(sparecards[n].replace("#", ""), visflag, SPARE));
+                            sparedeck.add (new Card(sparecards[n].replace("#", ""), visflag, SPARE));
                         }
 
                         // Setup up stacks with an initial fictitious zero card
-                        org.example.Card hearts_null_card = new org.example.Card("H0", false);
+                        Card hearts_null_card = new Card("H0", false);
                         hearts_null_card.setLocation("STACK");
                         heartsStack.add(hearts_null_card);
 
-                        org.example.Card diamonds_null_card = new org.example.Card("D0", false);
+                        Card diamonds_null_card = new Card("D0", false);
                         diamonds_null_card.setLocation("STACK");
                         diamondsStack.add(diamonds_null_card);
 
-                        org.example.Card spades_null_card = new org.example.Card("S0", false);
+                        Card spades_null_card = new Card("S0", false);
                         spades_null_card.setLocation("STACK");
                         spadesStack.add(spades_null_card);
 
-                        org.example.Card clubs_null_card = new org.example.Card("C0", false);
+                        Card clubs_null_card = new Card("C0", false);
                         clubs_null_card.setLocation("STACK");
                         clubsStack.add(clubs_null_card);
 
@@ -186,7 +181,7 @@ public class GameDeck {
         }
     }
 
-    public org.example.Card getSpareDeckCard() {
+    public Card getSpareDeckCard() {
         try {
             //System.out.println("sparedeckindex: " + sparedeckindex);
             if (sparedeckindex <= sparedeck.size() - 1) {
@@ -202,7 +197,7 @@ public class GameDeck {
         }
     }
 
-    public void removeCardFromDeck (org.example.Card playablecard) {
+    public void removeCardFromDeck (Card playablecard) {
         Boolean bbreak = false;
         for (int row = 0; row < 20; row++) {
             for (int col = 0; col < 7; col++) {
@@ -218,7 +213,7 @@ public class GameDeck {
             if (bbreak) break;
         }
     }
-    public void add2Stack (org.example.Card playablecard) {
+    public void add2Stack (Card playablecard) {
         try {
             switch(playablecard.getValue().substring(0,1)) {
                 case "H":
@@ -249,7 +244,7 @@ public class GameDeck {
         }
 
     }
-    public void move (org.example.Card playablecard, org.example.Card targetcard) {
+    public void move (Card playablecard, Card targetcard) {
 
         int initial_playable_row, initial_playable_col;
 
@@ -292,7 +287,7 @@ public class GameDeck {
                 int n = 0;
                 while (gamedeck[initial_playable_col][initial_playable_row + n + 1] != null) {
 
-                    org.example.Card nextCardDown = gamedeck[initial_playable_col][initial_playable_row + n + 1];
+                    Card nextCardDown = gamedeck[initial_playable_col][initial_playable_row + n + 1];
 
                     gamedeck[getCol(targetcard)][getRow(targetcard) + n + 2] = nextCardDown;
 
@@ -315,7 +310,7 @@ public class GameDeck {
 
                 while (gamedeck[initial_playable_col][initial_playable_row + n + 1] != null) {
 
-                    org.example.Card nextCardDown = gamedeck[initial_playable_col][initial_playable_row + n + 1];
+                    Card nextCardDown = gamedeck[initial_playable_col][initial_playable_row + n + 1];
 
                     gamedeck[getCol(targetcard)][getRow(targetcard) + n + 1] = nextCardDown;
 
@@ -350,7 +345,7 @@ public class GameDeck {
 
     }
 
-    int getRow(org.example.Card card) {
+    int getRow(Card card) {
         int r = -1;
 
         if (card != null) {
@@ -382,7 +377,7 @@ public class GameDeck {
         }
     }
 
-    int getCol(org.example.Card card) {
+    int getCol(Card card) {
         int c = -1;
 
         // empty column
@@ -406,8 +401,8 @@ public class GameDeck {
         return c;
     }
 
-    public org.example.Card getlast(ArrayList<org.example.Card> list) {
-        org.example.Card card;
+    public Card getlast(ArrayList<Card> list) {
+        Card card;
 
         try {
             card = list.get(list.size() - 1);
@@ -416,7 +411,7 @@ public class GameDeck {
         }
         return card;
     }
-    public Boolean isAllowed(org.example.Card playablecard, org.example.Card targetcard) {
+    public Boolean isAllowed(Card playablecard, Card targetcard) {
         Boolean checksuit = false;
         Boolean checknumber = false;
 
@@ -492,25 +487,25 @@ public class GameDeck {
         System.out.println("Stacks:");
 
         System.out.print("  Hearts:  ");
-        for (org.example.Card card: heartsStack) {
+        for (Card card: heartsStack) {
             if (n++!=0) System.out.print(card.getValue() + " ");
         }
         n= 0;
         System.out.println();
         System.out.print("  Diamonds:");
-        for (org.example.Card card: diamondsStack) {
+        for (Card card: diamondsStack) {
             if (n++!=0) System.out.print(card.getValue() + " ");
         }
         n= 0;
         System.out.println();
         System.out.print("  Spades:  ");
-        for (org.example.Card card: spadesStack) {
+        for (Card card: spadesStack) {
             if (n++!=0) System.out.print(card.getValue() + " ");
         }
         n= 0;
         System.out.println();
         System.out.print("  Clubs:   ");
-        for (org.example.Card card: clubsStack) {
+        for (Card card: clubsStack) {
             if (n++!=0) System.out.print(card.getValue() + " ");
         }
         System.out.println();
@@ -521,7 +516,7 @@ public class GameDeck {
         int n=0;
         System.out.print("Spare deck: ");
 
-        Iterator<org.example.Card> sparedeckitr = sparedeck.iterator();
+        Iterator<Card> sparedeckitr = sparedeck.iterator();
 
         //for (int p=0; p< sparedeck.size(); p++) {
         while(sparedeckitr.hasNext()) {

@@ -10,10 +10,10 @@ public final class Constants {
     public static final String SPAREGAME = "SPAREGAME";
     public static final String GAMEGAME = "GAMEGAME";
 
-
     // Private constructor to prevent instantiation
     private Constants() {
-        String foo = "foo";
+        // foo
+        throw new UnsupportedOperationException("Constants class cannot be instantiated.");
     }
 }
 
