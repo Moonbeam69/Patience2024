@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.*;
+import static org.example.Constants.*;
+
+// added a comment
 public class Action {
     String Description;
     Integer Priority;
@@ -16,9 +20,19 @@ public class Action {
 
     public Card playableCard;
     public Card targetCard;
-    static String SPARE = "SPARE";
-    static String GAME = "GAME";
-    static String STACK = "STACK";
+
+
+    public Optional<Object> createtype (String suggestedtype)  {
+
+        if (suggestedtype.equals(GAMEGAME) ||
+                suggestedtype.equals(GAMESTACK) ||
+                    suggestedtype.equals(SPAREGAME) ||
+                        suggestedtype.equals(SPARESTACK)) {
+            return Optional.of(suggestedtype);
+        }
+        return Optional.empty();
+
+    }
 
     public String getDescription() {
         int a = 1;
