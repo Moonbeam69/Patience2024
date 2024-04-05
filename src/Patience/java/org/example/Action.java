@@ -5,8 +5,12 @@ import static org.example.Constants.*;
 
 // added a comment
 public class Action {
-    String Description;
-    Integer Priority;
+    private String Description;
+    private Integer Priority;
+    public String type;
+    public Card playableCard;
+    public Card targetCard;
+
 
     public String getType() {
         return type;
@@ -15,11 +19,6 @@ public class Action {
     public void setType(String type) {
         this.type = type;
     }
-
-    public String type;
-
-    public Card playableCard;
-    public Card targetCard;
 
 
     public Optional<Object> createtype (String suggestedtype)  {
@@ -51,13 +50,17 @@ public class Action {
         Priority = priority;
     }
 
-    public void testme() {
-        int a=1;
-        if (a>0) {
-            int b = 2;
-        } else {
-            int c = 3;
-        }
+    @Override
+    public boolean equals(Object object) {
 
+        if(this.hashCode()==object.hashCode()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getDescription());
     }
 }

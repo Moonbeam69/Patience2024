@@ -18,6 +18,8 @@ public class ActionManager {
     public int              no_of_performed_actions             = 0;
     ArrayList<Action>       allActions;
 
+
+
     public ActionManager(GameDeck gameDeck, ArrayList<String> processDirectives, boolean print, boolean PRIORITISE_EMPTY_COLUMN_CREATION) {
         this.gamedeck = gameDeck;
         this.print = print;
@@ -29,10 +31,9 @@ public class ActionManager {
 
         allActions = new ArrayList<Action>();
         playableCards = new ArrayList();
-        //gamestate = new GameState();
 
-        org.example.Card firstcandidate = null;
-        org.example.Card lastcandidate = null;
+        Card firstcandidate = null;
+        Card lastcandidate = null;
 
         for (int col = 0; col < 7; col++) {
             for (int row = 0; row < 20; row++) {
@@ -137,6 +138,8 @@ public class ActionManager {
                     }
                 }
             }
+        } else {
+            filteredActions = allActions;
         }
 
         Iterator<Action> its = allActions.iterator();
