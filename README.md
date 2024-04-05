@@ -1,4 +1,4 @@
-Patience2024
+Patience2024.
 
 
 This app plays Solitaire X times (in-code config) using a selected strategy (in-code config). At the end of each run KPI (% win, max score) is presented
