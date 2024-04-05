@@ -25,7 +25,6 @@ public class ActionTest {
     @Test(expected = AssertionError.class)
     public void testTestMe() {
         Action testaction = new Action();
-        testaction.testme();
         Assert.assertEquals(1,2);
     }
 }

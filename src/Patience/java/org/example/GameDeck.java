@@ -15,9 +15,10 @@ public class GameDeck {
     ArrayList<Card> clubsStack = new ArrayList<Card>();
     int sparedeckindex = 0;
 
+    public void foo() {System.out.println("hello world");}
+
     public GameDeck() {
     }
-
     public GameDeck(String testdatafile) {
 
         if (testdatafile.equals("")) {
@@ -342,9 +343,7 @@ public class GameDeck {
                 sparedeckindex=0;
             }
         }
-
     }
-
     int getRow(Card card) {
         int r = -1;
 
@@ -400,7 +399,6 @@ public class GameDeck {
         }
         return c;
     }
-
     public Card getlast(ArrayList<Card> list) {
         Card card;
 
