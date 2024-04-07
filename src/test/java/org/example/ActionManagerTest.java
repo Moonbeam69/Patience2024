@@ -4,10 +4,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import static org.example.Constants.GAMEGAME;
-import static org.example.Constants.GAMESTACK;
-import static org.example.Constants.SPAREGAME;
-import static org.example.Constants.SPARESTACK;
+import static org.example.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActionManagerTest {
