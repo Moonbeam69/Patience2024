@@ -1,7 +1,8 @@
 package org.example;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 public class ActionTest {
 
     @Test
@@ -10,7 +11,7 @@ public class ActionTest {
 
         Action testaction = new Action();
         testaction.setDescription(testmessage);
-        Assert.assertEquals(testaction.getDescription(), testmessage);
+        assertEquals(testaction.getDescription(), testmessage);
     }
 
     @Test
@@ -19,12 +20,7 @@ public class ActionTest {
 
         Action testaction = new Action();
         testaction.setPriority(testpriority);
-        Assert.assertEquals(testaction.getPriority(), testpriority);
+        assertEquals(testaction.getPriority(), testpriority);
     }
 
-    @Test(expected = AssertionError.class)
-    public void testTestMe() {
-        Action testaction = new Action();
-        Assert.assertEquals(1,2);
-    }
 }
